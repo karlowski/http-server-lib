@@ -5,7 +5,8 @@
 
 // TODO: unordered_map { HttpMethod, HttpMethodKey(?) } for method parsing
 
-namespace RequestParser {
+namespace RequestParser 
+{
     HttpMethod parseMethod(const std::string& method) 
     {
         if (method == "GET") return HttpMethod::GET;
