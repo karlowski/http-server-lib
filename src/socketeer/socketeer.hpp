@@ -1,6 +1,6 @@
 #include <cstddef>
 
-typedef class SocketeerService
+class SocketeerService 
 {
     public:
         virtual int initializeSocket(int port) = 0;
@@ -10,5 +10,16 @@ typedef class SocketeerService
         virtual void send(unsigned int socket, const char *data, size_t len) = 0;
 };
 
-class InternalSocketeerService : public SocketeerService
-{};
+class InternalSocketeerService : public SocketeerService 
+{
+    private:
+    public:
+    InternalSocketeerService();
+    ~InternalSocketeerService();
+
+    int initializeSocket(int port) override;
+    void listen(unsigned int socket, unsigned int queue) override;
+    void close(unsigned int socket) override;
+    int accept(unsigned int socket) override;
+    void send(unsigned int socket, const char *data, size_t len) override;
+};

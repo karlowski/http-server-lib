@@ -9,52 +9,50 @@
 
 #include "socketeer.hpp"
 
-class InternalSocketeerService : public SocketeerService
+InternalSocketeerService::InternalSocketeerService() {};
+InternalSocketeerService::~InternalSocketeerService() {};
+
+int InternalSocketeerService::initializeSocket(int port) 
 {
-    private:
-    public:
-    InternalSocketeerService() {}
-    ~InternalSocketeerService() {}
+    sockaddr_in address{};
+    address.sin_family = AF_INET;
+    address.sin_port = htons(port);
+    address.sin_addr.s_addr = INADDR_ANY;
+    
+    int fd{socket(AF_INET, SOCK_STREAM, 0)};
+    int isBound{bind(fd, (sockaddr *)&address, sizeof(address))};
 
-    int initializeSocket(int port) override
+    if (fd < 0 || isBound < 0) 
     {
-        sockaddr_in address{
-            .sin_family = AF_INET,
-            .sin_port = htons(port),
-            .sin_addr.s_addr = INADDR_ANY};
-        int fd{socket(AF_INET, SOCK_STREAM, 0)};
-        int isBound{bind(fd, (sockaddr *)&address, sizeof(address))};
+        throw std::runtime_error(
+            std::string("Error initiating a socket; ") + std::strerror(errno)
+        );
+    }
 
-        if (fd < 0 || isBound < 0)
-        {
-            throw std::runtime_error(
-                std::string("Error initiating a socket; ") + std::strerror(errno)
-            );
-        }
+    return fd;
+};
 
-        return fd;
-    };
-
-    void listen(unsigned int socket, unsigned int queue) override
+void InternalSocketeerService::listen(unsigned int socket, unsigned int queue) 
+{
+    if (::listen(socket, queue) < 0) 
     {
-        if (::listen(socket, queue) < 0)
-        {
-            throw std::runtime_error(
-                std::string("Error listening to a socket; ") + std::strerror(errno)
-            );
-        }
-    };
+        throw std::runtime_error(
+            std::string("Error listening to a socket; ") + std::strerror(errno)
+        );
+    }
+};
 
-    void close(unsigned int socket) override
-    {
-        ::close(socket);
-    };
+void InternalSocketeerService::close(unsigned int socket) 
+{
+    ::close(socket);
+};
 
-    int accept(unsigned int socket) override
-    {
-    };
+int InternalSocketeerService::accept(unsigned int socket) 
+{
+    // TODO
+};
 
-    void send(unsigned int socket, const char *data, size_t len) override
-    {
-    };
+void InternalSocketeerService::send(unsigned int socket, const char *data, size_t len) 
+{
+    // TODO
 };
