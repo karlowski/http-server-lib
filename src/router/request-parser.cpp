@@ -3,6 +3,8 @@
 #include "router.hpp"
 
 
+// TODO: unordered_map { HttpMethod, HttpMethodKey(?) } for method parsing
+
 namespace RequestParser {
     HttpMethod parseMethod(const std::string& method) 
     {
