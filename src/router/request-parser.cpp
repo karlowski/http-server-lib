@@ -3,43 +3,48 @@
 #include "router.hpp"
 
 
-// TODO: unordered_map { HttpMethod, HttpMethodKey(?) } for method parsing
+std::unordered_map<std::string, HttpMethod> stringToMethodMap
+{
+    {"GET", HttpMethod::GET},
+    {"POST", HttpMethod::POST},
+    {"PUT", HttpMethod::PUT},
+    {"PATCH", HttpMethod::PATCH},
+    {"OPTIONS", HttpMethod::OPTIONS},
+    {"HEAD", HttpMethod::HEAD},
+    {"DELETE", HttpMethod::DELETE_}
+};
+
+std::unordered_map<HttpMethod, std::string> methodToStringMap
+{
+    {HttpMethod::GET, "GET" },
+    {HttpMethod::POST, "POST"},
+    {HttpMethod::PUT, "PUT"},
+    {HttpMethod::PATCH, "PATCH"},
+    {HttpMethod::OPTIONS, "OPTIONS"},
+    {HttpMethod::HEAD, "HEAD"},
+    {HttpMethod::DELETE_, "DELETE"}
+};
 
 namespace RequestParser 
 {
     HttpMethod parseMethod(const std::string& method) 
     {
-        if (method == "GET") return HttpMethod::GET;
-        if (method == "POST") return HttpMethod::POST;
-        if (method == "PUT") return HttpMethod::PUT;
-        if (method == "PATCH") return HttpMethod::PATCH;
-        if (method == "OPTIONS") return HttpMethod::OPTIONS;
-        if (method == "HEAD") return HttpMethod::HEAD;
-        if (method == "DELETE") return HttpMethod::DELETE_;
-
-        throw std::runtime_error("Unknown HTTP method: " + method);
+        try
+        {
+            return stringToMethodMap.find(method)->second;
+        }
+        catch(const std::exception& e)
+        {
+            throw std::runtime_error("Unknown HTTP method: " + method);
+        }
     };
 
     const std::string methodToString(HttpMethod method) 
     {
         switch (method) 
         {
-            case HttpMethod::GET:
-                return "GET";
-            case HttpMethod::POST:
-                return "POST";
-            case HttpMethod::PUT:
-                return "PUT";
-            case HttpMethod::PATCH:
-                return "PATCH";
-            case HttpMethod::OPTIONS:
-                return "OPTIONS";
-            case HttpMethod::HEAD:
-                return "HEAD";
-            case HttpMethod::DELETE_:
-                return "DELETE_";
-            default:
-                __builtin_unreachable(); // interesting stuff
+            return methodToStringMap.find(method)->second;
+                // __builtin_unreachable(); // interesting stuff
         }
     };
 
