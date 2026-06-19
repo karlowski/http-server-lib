@@ -3,7 +3,7 @@
 #include "router.hpp"
 
 
-std::unordered_map<std::string, HttpMethod> stringToMethodMap
+const std::unordered_map<std::string, HttpMethod> stringToMethodMap
 {
     {"GET", HttpMethod::GET},
     {"POST", HttpMethod::POST},
@@ -14,7 +14,7 @@ std::unordered_map<std::string, HttpMethod> stringToMethodMap
     {"DELETE", HttpMethod::DELETE_}
 };
 
-std::unordered_map<HttpMethod, std::string> methodToStringMap
+const std::unordered_map<HttpMethod, std::string> methodToStringMap
 {
     {HttpMethod::GET, "GET" },
     {HttpMethod::POST, "POST"},
@@ -41,7 +41,6 @@ namespace RequestParser
 
     const std::string methodToString(HttpMethod method) 
     {
-        switch (method) 
         {
             return methodToStringMap.find(method)->second;
                 // __builtin_unreachable(); // interesting stuff

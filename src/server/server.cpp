@@ -13,7 +13,7 @@ class HttpServer
         std::unique_ptr<RouterBase> router;
         HttpServerConfig config;
 
-        HttpServerConfig initConfig(int port)
+        void initConfig(int port)
         {
             this->config = (HttpServerConfig) {
                 .fd = 0,
@@ -39,7 +39,7 @@ class HttpServer
         ~HttpServer() {};
 
         
-        int run() 
+        void run() 
         {
             this->config.fd = this->socketeer->initializeSocket(this->config.port);
             this->config.active = 1;
